@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ve-red: #CF142B;
+  --ve-yellow: #F4C430;
+  --ve-blue: #003DA5;
+}
+
+body {
+  background-color: #0D1117;
+}
+
+/* Scrollbar dark */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1B2432;
+}
+::-webkit-scrollbar-thumb {
+  background: #4A5568;
+  border-radius: 3px;
+}
+
+/* Selección */
+::selection {
+  background: rgba(207, 20, 43, 0.3);
+  color: #F4C430;
+}

@@ -1,0 +1,84 @@
+# Contrataciones VE — Plataforma Abierta Anticorrupción
+
+Prototipo open-source de transparencia de contratación pública para Venezuela.
+Basado en estándares OCDS (Open Contracting Data Standard).
+
+**Autor:** Jesús Alexander León Cordero — Tech Lead | MSc. Ciencias de la Computación
+**Licencia:** MIT
+**Fecha:** 2026
+
+## Stack
+- Backend: Python 3.12 + FastAPI
+- Frontend: Next.js 14 (App Router) + TypeScript
+- Base de datos: Supabase (PostgreSQL)
+
+## Inicio rápido
+
+### Requisitos
+- Python 3.12+
+- Node.js 20+
+- Cuenta en Supabase (supabase.com)
+- Docker (opcional)
+
+### 1. Clonar y configurar variables de entorno
+
+```bash
+git clone https://github.com/tu-usuario/contrataciones-ve
+cd contrataciones-ve
+
+# Backend
+cp backend/.env.example backend/.env
+# Editar backend/.env con tus credenciales de Supabase
+
+# Frontend
+cp frontend/.env.local.example frontend/.env.local
+# Editar frontend/.env.local con la URL del backend
+```
+
+### 2. Inicializar la base de datos
+
+Ejecutar el SQL de `supabase/migrations/001_initial_schema.sql` en el SQL Editor de Supabase.
+Luego ejecutar `supabase/seed.sql` para datos de demostración.
+
+### 3. Backend
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+API disponible en: http://localhost:8000
+Docs interactivos: http://localhost:8000/docs
+
+### 4. Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+App disponible en: http://localhost:3000
+
+### 5. Con Docker
+
+```bash
+docker-compose up --build
+```
+
+## Endpoints principales
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | /api/v1/processes | Listado de procesos de contratación |
+| GET | /api/v1/contracts | Listado de contratos |
+| GET | /api/v1/suppliers | Listado de proveedores |
+| GET | /api/v1/risk/alerts | Alertas de riesgo |
+| GET | /api/v1/download/contracts.csv | Descarga masiva CSV |
+| GET | /api/v1/download/ocds/releases.json | Exportación OCDS |
+
+## Documentación
+Ver `/docs` en el backend para la especificación OpenAPI completa.
