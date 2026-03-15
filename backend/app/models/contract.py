@@ -30,3 +30,35 @@ class Contract(Base):
     created_at = Column(DateTime(timezone=True), server_default=text("NOW()"))
     updated_at = Column(DateTime(timezone=True), server_default=text("NOW()"))
     status_changed_at = Column(DateTime(timezone=True))
+
+
+class ContractAmendment(Base):
+    __tablename__ = "contract_amendments"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    contract_id = Column(UUID(as_uuid=True),
+                         ForeignKey("contracts.id", ondelete="CASCADE"), nullable=False)
+    amendment_number = Column(Integer, nullable=False)
+    description = Column(String)
+    original_amount = Column(Numeric(20, 2))
+    new_amount = Column(Numeric(20, 2))
+    amount_change = Column(Numeric(20, 2))
+    original_end_date = Column(Date)
+    new_end_date = Column(Date)
+    signed_at = Column(Date)
+    created_at = Column(DateTime(timezone=True), server_default=text("NOW()"))
+
+
+class ContractPayment(Base):
+    __tablename__ = "contract_payments"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    contract_id = Column(UUID(as_uuid=True),
+                         ForeignKey("contracts.id", ondelete="CASCADE"), nullable=False)
+    payment_number = Column(Integer, nullable=False)
+    amount = Column(Numeric(20, 2), nullable=False)
+    currency = Column(String(10), default="USD")
+    status = Column(String(50), default="paid")
+    payment_date = Column(Date)
+    description = Column(String)
+    created_at = Column(DateTime(timezone=True), server_default=text("NOW()"))

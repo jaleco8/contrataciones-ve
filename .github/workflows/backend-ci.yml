@@ -1,0 +1,56 @@
+name: Backend CI
+
+# Ejecutar en push y PRs hacia master, solo cuando cambian archivos del backend
+on:
+  push:
+    branches: [master]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+
+jobs:
+  lint-and-test:
+    name: Lint y verificación de imports
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Obtener el código fuente
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # Paso 2: Configurar Python 3.12 con caché de pip
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      # Paso 3: Instalar dependencias del backend
+      - name: Instalar dependencias
+        run: pip install -r backend/requirements.txt
+
+      # Paso 4: Instalar ruff y ejecutar linting
+      # Verifica errores de sintaxis (E), imports no usados (F), warnings (W)
+      # E501 ignorado para no forzar límite de longitud de línea
+      - name: Lint con ruff
+        run: |
+          pip install ruff
+          ruff check backend/app --select E,F,W --ignore E501
+
+      # Paso 5: Verificar que la aplicación importa correctamente
+      # Se usa DATABASE_URL ficticia para que pydantic-settings no falle al arrancar
+      # No se conecta a ninguna base de datos real en este paso
+      - name: Verificar imports de la aplicación
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/testdb
+          SUPABASE_URL: https://placeholder.supabase.co
+          SUPABASE_KEY: placeholder-key
+          SECRET_KEY: ci-test-secret-key
+        run: python -c "from app.main import app; print('Import OK — app cargada correctamente')"

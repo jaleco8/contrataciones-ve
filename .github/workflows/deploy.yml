@@ -1,0 +1,95 @@
+name: Deploy
+
+# Solo ejecutar en push directo a master (no en PRs)
+# Se activa cuando cambian archivos del backend o frontend
+on:
+  push:
+    branches: [master]
+    paths:
+      - "backend/**"
+      - "frontend/**"
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Despliegue del backend (Railway / Render / Fly.io)
+  # ─────────────────────────────────────────────
+  deploy-backend:
+    name: Desplegar Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Obtener el código fuente
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # Paso 2: Despliegue del backend
+      # Configurar los secretos necesarios en:
+      # GitHub → Settings → Secrets and variables → Actions
+      #
+      # Secretos requeridos según plataforma elegida:
+      #   Railway:  RAILWAY_TOKEN
+      #   Render:   RENDER_DEPLOY_HOOK_URL
+      #   Fly.io:   FLY_API_TOKEN
+      #
+      # Variables de entorno de la aplicación:
+      #   DATABASE_URL  — URL de conexión a Supabase PostgreSQL
+      #   SUPABASE_URL  — URL del proyecto Supabase
+      #   SUPABASE_KEY  — Clave anon de Supabase
+      #   SECRET_KEY    — Clave secreta para JWT
+      - name: Desplegar backend en plataforma cloud
+        run: |
+          # Añade aquí los pasos de despliegue para tu plataforma elegida
+          # Ejemplo Railway:
+          #   npm install -g @railway/cli
+          #   railway up --service backend --detach
+          #
+          # Ejemplo Render (deploy hook):
+          #   curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          #
+          # Ejemplo Fly.io:
+          #   curl -L https://fly.io/install.sh | sh
+          #   flyctl deploy --app contrataciones-ve-backend --remote-only
+          echo "Backend deployment placeholder — configura Railway/Render/Fly.io secrets"
+          echo "DATABASE_URL, SUPABASE_URL, SUPABASE_KEY y SECRET_KEY deben estar en GitHub Secrets"
+
+  # ─────────────────────────────────────────────
+  # Despliegue del frontend (Vercel)
+  # ─────────────────────────────────────────────
+  deploy-frontend:
+    name: Desplegar Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Obtener el código fuente
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # Paso 2: Despliegue del frontend en Vercel
+      # Configurar los secretos necesarios en:
+      # GitHub → Settings → Secrets and variables → Actions
+      #
+      # Secretos requeridos para Vercel:
+      #   VERCEL_TOKEN   — Token de API de Vercel (vercel.com/account/tokens)
+      #   VERCEL_ORG_ID  — ID de la organización en Vercel
+      #   VERCEL_PROJECT_ID — ID del proyecto en Vercel
+      #
+      # Variables de entorno del frontend (configurar en Vercel dashboard):
+      #   NEXT_PUBLIC_API_URL — URL pública del backend desplegado
+      - name: Desplegar frontend en Vercel
+        run: |
+          # Añade aquí los pasos de despliegue para Vercel
+          # Ejemplo con Vercel CLI:
+          #   npm install -g vercel
+          #   vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          #   vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          #   vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          #
+          # O usa la GitHub Action oficial de Vercel:
+          #   uses: amondnet/vercel-action@v25
+          #   with:
+          #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          #     working-directory: ./frontend
+          echo "Frontend deployment placeholder — configura Vercel secrets"
+          echo "VERCEL_TOKEN, VERCEL_ORG_ID y VERCEL_PROJECT_ID deben estar en GitHub Secrets"

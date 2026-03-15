@@ -1,12 +1,20 @@
 import os
 import sys
 from logging.config import fileConfig
+from pathlib import Path
 
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
 # Ensure app is importable
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Load .env file so DATABASE_URL is available when running alembic commands
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent.parent / ".env")
+except ImportError:
+    pass  # python-dotenv not installed, rely on shell environment
 
 from app.models import Base  # noqa: E402 — imports all models via __init__.py
 

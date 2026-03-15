@@ -37,16 +37,24 @@ cp frontend/.env.local.example frontend/.env.local
 
 ### 2. Inicializar la base de datos
 
-Ejecutar el SQL de `supabase/migrations/001_initial_schema.sql` en el SQL Editor de Supabase.
-Luego ejecutar `supabase/seed.sql` para datos de demostración.
-
-### 3. Backend
-
 ```bash
 cd backend
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
+
+# Crear tablas (migraciones Alembic)
+alembic upgrade head
+
+# Cargar datos de demostración
+python -m app.seed.seed_data
+```
+
+### 3. Backend
+
+```bash
+cd backend
+# (el venv ya fue activado en el paso 2)
 uvicorn app.main:app --reload --port 8000
 ```
 
