@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import {
   FileText, Users, AlertTriangle, TrendingUp,
@@ -47,44 +49,8 @@ async function getDashboardData() {
 export default async function DashboardPage() {
   const { stats, recentContracts, recentAlerts } = await getDashboardData();
 
-  const statCards = [
-    {
-      label: "Contratos Activos",
-      value: stats.activeContracts,
-      total: `de ${stats.totalContracts} totales`,
-      icon: FileText,
-      color: "text-blue-400",
-      bg: "bg-blue-400/10",
-      href: "/contracts",
-    },
-    {
-      label: "Alertas Abiertas",
-      value: stats.openAlerts,
-      total: `${stats.criticalAlerts} críticas`,
-      icon: AlertTriangle,
-      color: stats.criticalAlerts > 0 ? "text-red-400" : "text-orange-400",
-      bg: stats.criticalAlerts > 0 ? "bg-red-400/10" : "bg-orange-400/10",
-      href: "/risk",
-    },
-    {
-      label: "Proveedores",
-      value: stats.totalSuppliers,
-      total: "registrados",
-      icon: Users,
-      color: "text-green-400",
-      bg: "bg-green-400/10",
-      href: "/suppliers",
-    },
-    {
-      label: "Licitaciones Activas",
-      value: stats.activeTenders,
-      total: "en proceso",
-      icon: Activity,
-      color: "text-yellow-400",
-      bg: "bg-yellow-400/10",
-      href: "/contracts",
-    },
-  ];
+  const alertColor = stats.criticalAlerts > 0 ? "text-red-400" : "text-orange-400";
+  const alertBg = stats.criticalAlerts > 0 ? "bg-red-400/10" : "bg-orange-400/10";
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -116,22 +82,49 @@ export default async function DashboardPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        {statCards.map(({ label, value, total, icon: Icon, color, bg, href }) => (
-          <Link
-            key={label}
-            href={href}
-            className="bg-ve-slate border border-ve-border rounded-xl p-5 hover:border-ve-muted transition-colors group"
-          >
-            <div className={`inline-flex p-2 rounded-lg ${bg} mb-3`}>
-              <Icon className={`w-5 h-5 ${color}`} />
-            </div>
-            <div className="font-display text-3xl font-semibold text-ve-text group-hover:text-white transition-colors">
-              {value}
-            </div>
-            <div className="text-xs text-ve-muted mt-1">{label}</div>
-            <div className="text-xs text-ve-muted/60">{total}</div>
-          </Link>
-        ))}
+        <Link href="/contracts" className="bg-ve-slate border border-ve-border rounded-xl p-5 hover:border-ve-muted transition-colors group">
+          <div className="inline-flex p-2 rounded-lg bg-blue-400/10 mb-3">
+            <FileText className="w-5 h-5 text-blue-400" />
+          </div>
+          <div className="font-display text-3xl font-semibold text-ve-text group-hover:text-white transition-colors">
+            {stats.activeContracts}
+          </div>
+          <div className="text-xs text-ve-muted mt-1">Contratos Activos</div>
+          <div className="text-xs text-ve-muted/60">de {stats.totalContracts} totales</div>
+        </Link>
+
+        <Link href="/risk" className="bg-ve-slate border border-ve-border rounded-xl p-5 hover:border-ve-muted transition-colors group">
+          <div className={`inline-flex p-2 rounded-lg ${alertBg} mb-3`}>
+            <AlertTriangle className={`w-5 h-5 ${alertColor}`} />
+          </div>
+          <div className="font-display text-3xl font-semibold text-ve-text group-hover:text-white transition-colors">
+            {stats.openAlerts}
+          </div>
+          <div className="text-xs text-ve-muted mt-1">Alertas Abiertas</div>
+          <div className="text-xs text-ve-muted/60">{stats.criticalAlerts} críticas</div>
+        </Link>
+
+        <Link href="/suppliers" className="bg-ve-slate border border-ve-border rounded-xl p-5 hover:border-ve-muted transition-colors group">
+          <div className="inline-flex p-2 rounded-lg bg-green-400/10 mb-3">
+            <Users className="w-5 h-5 text-green-400" />
+          </div>
+          <div className="font-display text-3xl font-semibold text-ve-text group-hover:text-white transition-colors">
+            {stats.totalSuppliers}
+          </div>
+          <div className="text-xs text-ve-muted mt-1">Proveedores</div>
+          <div className="text-xs text-ve-muted/60">registrados</div>
+        </Link>
+
+        <Link href="/contracts" className="bg-ve-slate border border-ve-border rounded-xl p-5 hover:border-ve-muted transition-colors group">
+          <div className="inline-flex p-2 rounded-lg bg-yellow-400/10 mb-3">
+            <Activity className="w-5 h-5 text-yellow-400" />
+          </div>
+          <div className="font-display text-3xl font-semibold text-ve-text group-hover:text-white transition-colors">
+            {stats.activeTenders}
+          </div>
+          <div className="text-xs text-ve-muted mt-1">Licitaciones Activas</div>
+          <div className="text-xs text-ve-muted/60">en proceso</div>
+        </Link>
       </div>
 
       {/* Main Content Grid */}

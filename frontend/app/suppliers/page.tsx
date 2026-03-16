@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getSuppliers } from "@/lib/api";
 import { formatCurrency, getSanctionColor } from "@/lib/utils";
 import { cn } from "@/lib/utils";

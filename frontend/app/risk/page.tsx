@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getRiskAlerts } from "@/lib/api";
 import { formatDate, getAlertTypeLabel } from "@/lib/utils";
 import { SeverityBadge } from "@/components/risk/SeverityBadge";
