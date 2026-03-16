@@ -48,7 +48,7 @@ export function Navbar() {
               href={`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/docs`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-ve-blue hover:text-ve-yellow hover:bg-ve-border/50 transition-all ml-2"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-blue-400 hover:text-ve-yellow hover:bg-ve-border/50 transition-all ml-2"
             >
               <Download className="w-4 h-4" />
               <span className="hidden md:inline font-display text-xs">API</span>

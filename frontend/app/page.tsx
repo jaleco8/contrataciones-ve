@@ -137,7 +137,7 @@ export default async function DashboardPage() {
               <AlertTriangle className="w-4 h-4 text-orange-400" />
               Alertas de Riesgo Prioritarias
             </h2>
-            <Link href="/risk" className="text-xs text-ve-blue hover:text-ve-yellow flex items-center gap-1 transition-colors">
+            <Link href="/risk" className="text-xs text-blue-400 hover:text-ve-yellow flex items-center gap-1 transition-colors">
               Ver todas <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
@@ -175,7 +175,7 @@ export default async function DashboardPage() {
               <FileText className="w-4 h-4 text-blue-400" />
               Contratos Recientes
             </h2>
-            <Link href="/contracts" className="text-xs text-ve-blue hover:text-ve-yellow flex items-center gap-1 transition-colors">
+            <Link href="/contracts" className="text-xs text-blue-400 hover:text-ve-yellow flex items-center gap-1 transition-colors">
               Ver todos <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
@@ -207,9 +207,9 @@ export default async function DashboardPage() {
       </div>
 
       {/* API CTA */}
-      <div className="mt-6 bg-ve-blue/10 border border-ve-blue/30 rounded-xl p-5 flex items-center justify-between gap-4">
+      <div className="mt-6 bg-blue-400/5 border border-blue-400/20 rounded-xl p-5 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Database className="w-5 h-5 text-ve-blue flex-shrink-0" />
+          <Database className="w-5 h-5 text-blue-400 flex-shrink-0" />
           <div>
             <p className="font-display text-sm font-semibold text-ve-text">API Pública Disponible</p>
             <p className="text-xs text-ve-muted">OCDS compatible | Paginación estándar | CSV y JSON</p>
@@ -219,7 +219,7 @@ export default async function DashboardPage() {
           href={`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/docs`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2 bg-ve-blue/20 hover:bg-ve-blue/30 border border-ve-blue/40 rounded-lg text-xs font-display text-ve-blue hover:text-white transition-all whitespace-nowrap"
+          className="flex items-center gap-2 px-4 py-2 bg-blue-400/10 hover:bg-blue-400/20 border border-blue-400/30 rounded-lg text-xs font-display text-blue-400 hover:text-white transition-all whitespace-nowrap"
         >
           Explorar API <ArrowRight className="w-3 h-3" />
         </a>

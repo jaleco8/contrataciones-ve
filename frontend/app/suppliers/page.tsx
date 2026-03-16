@@ -65,7 +65,7 @@ export default async function SuppliersPage({
               href={`/suppliers${params}`}
               className={`px-3 py-1.5 rounded-full text-xs font-display border transition-all ${
                 isActive
-                  ? "bg-ve-blue/20 border-ve-blue text-ve-blue"
+                  ? "bg-blue-400/15 border-blue-400/60 text-blue-400"
                   : "bg-ve-slate border-ve-border text-ve-muted hover:border-ve-muted"
               }`}
             >

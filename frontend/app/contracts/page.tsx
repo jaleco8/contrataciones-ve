@@ -80,7 +80,7 @@ export default async function ContractsPage({
               href={`/contracts?${params.toString()}`}
               className={`px-3 py-1.5 rounded-full text-xs font-display border transition-all ${
                 isActive
-                  ? "bg-ve-blue/20 border-ve-blue text-ve-blue"
+                  ? "bg-blue-400/15 border-blue-400/60 text-blue-400"
                   : "bg-ve-slate border-ve-border text-ve-muted hover:border-ve-muted"
               }`}
             >
@@ -114,7 +114,7 @@ export default async function ContractsPage({
                 >
                   <td className="py-3 px-4">
                     <Link href={`/contracts/${contract.id}`} className="group">
-                      <div className="font-display text-xs text-ve-muted group-hover:text-ve-blue transition-colors">
+                      <div className="font-display text-xs text-ve-muted group-hover:text-blue-400 transition-colors">
                         {contract.contract_number}
                       </div>
                       <div className="text-sm text-ve-text group-hover:text-white transition-colors line-clamp-1 mt-0.5">

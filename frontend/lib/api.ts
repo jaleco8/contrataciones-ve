@@ -19,7 +19,7 @@ export class ApiError extends Error {
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}/api/v1${path}`, {
-    next: { revalidate: 60 },
+    cache: "no-store",
     ...init,
   });
   if (!res.ok) {

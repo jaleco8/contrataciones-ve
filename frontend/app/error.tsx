@@ -25,7 +25,7 @@ export default function GlobalError({
       </p>
       <button
         onClick={reset}
-        className="inline-flex items-center gap-2 px-4 py-2 bg-ve-blue/20 hover:bg-ve-blue/30 border border-ve-blue/40 rounded-lg text-sm text-ve-blue hover:text-white transition-all"
+        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-400/10 hover:bg-blue-400/20 border border-blue-400/30 rounded-lg text-sm text-blue-400 hover:text-white transition-all"
       >
         Reintentar
       </button>

@@ -73,7 +73,7 @@ export default async function RiskPage({
             href={`/risk?status=${status}`}
             className={`px-3 py-1.5 rounded-full text-xs font-display border transition-all ${
               statusFilter === status
-                ? "bg-ve-blue/20 border-ve-blue text-ve-blue"
+                ? "bg-blue-400/15 border-blue-400/60 text-blue-400"
                 : "bg-ve-slate border-ve-border text-ve-muted hover:border-ve-muted"
             }`}
           >
@@ -87,7 +87,7 @@ export default async function RiskPage({
             href={`/risk?severity=${sev}&status=${statusFilter}`}
             className={`px-3 py-1.5 rounded-full text-xs font-display border transition-all ${
               searchParams.severity === sev
-                ? "bg-ve-blue/20 border-ve-blue text-ve-blue"
+                ? "bg-blue-400/15 border-blue-400/60 text-blue-400"
                 : "bg-ve-slate border-ve-border text-ve-muted hover:border-ve-muted"
             }`}
           >

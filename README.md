@@ -4,7 +4,7 @@ Prototipo open-source de transparencia de contratación pública para Venezuela.
 Basado en estándares OCDS (Open Contracting Data Standard).
 
 **Autor:** Jesús Alexander León Cordero — Tech Lead | MSc. Ciencias de la Computación
-**Licencia:** MIT
+**Licencia código:** [MIT](LICENSE) | **Licencia datos:** [CC BY 4.0](LICENSE-CC-BY-4.0)
 **Fecha:** 2026
 
 ## Stack
