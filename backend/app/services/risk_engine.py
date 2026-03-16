@@ -4,7 +4,7 @@ Implementa banderas rojas basadas en OCDS Red Flags for Integrity
 Todas las alertas generadas son señales para revisión humana, NO conclusiones.
 """
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select
 from app.models.contract import Contract
 from app.models.process import Process
 from app.models.supplier import Supplier

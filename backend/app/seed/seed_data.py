@@ -15,17 +15,15 @@ from pathlib import Path
 from datetime import date, datetime, timezone
 
 from dotenv import load_dotenv
-
-load_dotenv(Path(__file__).parent.parent.parent / ".env")
-
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy import text, delete
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker  # noqa: E402
+from sqlalchemy import text  # noqa: E402
 
 # Importar modelos para que SQLAlchemy los conozca
-from app.models.supplier import Supplier
-from app.models.process import Process
-from app.models.contract import Contract
-from app.models.risk_alert import RiskAlert
+from app.models.supplier import Supplier  # noqa: E402
+from app.models.process import Process  # noqa: E402
+from app.models.risk_alert import RiskAlert  # noqa: E402
+
+load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 # ---------------------------------------------------------------------------
 # Conexión
