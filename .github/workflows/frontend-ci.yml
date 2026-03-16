@@ -1,14 +1,14 @@
 name: Frontend CI
 
-# Ejecutar en push y PRs hacia master, solo cuando cambian archivos del frontend
+# Ejecutar en push y PRs hacia main/master, solo cuando cambian archivos del frontend
 on:
   push:
-    branches: [master]
+    branches: [main, master]
     paths:
       - "frontend/**"
       - ".github/workflows/frontend-ci.yml"
   pull_request:
-    branches: [master]
+    branches: [main, master]
     paths:
       - "frontend/**"
       - ".github/workflows/frontend-ci.yml"

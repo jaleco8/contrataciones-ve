@@ -1,14 +1,14 @@
 name: Backend CI
 
-# Ejecutar en push y PRs hacia master, solo cuando cambian archivos del backend
+# Ejecutar en push y PRs hacia main/master, solo cuando cambian archivos del backend
 on:
   push:
-    branches: [master]
+    branches: [main, master]
     paths:
       - "backend/**"
       - ".github/workflows/backend-ci.yml"
   pull_request:
-    branches: [master]
+    branches: [main, master]
     paths:
       - "backend/**"
       - ".github/workflows/backend-ci.yml"

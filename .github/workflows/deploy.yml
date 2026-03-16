@@ -1,13 +1,14 @@
 name: Deploy
 
-# Solo ejecutar en push directo a master (no en PRs)
+# Solo ejecutar en push directo a main/master (no en PRs)
 # Se activa cuando cambian archivos del backend o frontend
 on:
   push:
-    branches: [master]
+    branches: [main, master]
     paths:
       - "backend/**"
       - "frontend/**"
+  workflow_dispatch:
 
 jobs:
   # ─────────────────────────────────────────────

@@ -77,6 +77,58 @@ App disponible en: http://localhost:3000
 docker-compose up --build
 ```
 
+## Publicar en GitHub y activar CI/CD
+
+### 1. Subir el monorepo a GitHub
+
+```bash
+git init
+git add .
+git commit -m "feat: inicializar monorepo contrataciones-ve"
+git branch -M main
+git remote add origin https://github.com/TU-USUARIO/contrataciones-ve.git
+git push -u origin main
+```
+
+Si ya tienes remoto configurado, solo necesitas:
+
+```bash
+git add .
+git commit -m "chore: actualizar proyecto"
+git push
+```
+
+### 2. Configurar GitHub Actions
+
+El repositorio incluye workflows en `.github/workflows/`:
+
+- `backend-ci.yml` (lint/import-check backend)
+- `frontend-ci.yml` (lint/build frontend)
+- `deploy.yml` (plantilla de despliegue)
+
+### 3. Configurar Secrets (si usarás deploy)
+
+En GitHub: `Settings -> Secrets and variables -> Actions`
+
+Secrets sugeridos:
+
+- `DATABASE_URL`
+- `SUPABASE_URL`
+- `SUPABASE_KEY`
+- `SECRET_KEY`
+- `VERCEL_TOKEN`
+- `VERCEL_ORG_ID`
+- `VERCEL_PROJECT_ID`
+- `RENDER_DEPLOY_HOOK_URL` (si usas Render)
+
+### 4. Estrategia recomendada de despliegue
+
+- Frontend: Vercel (conectado al repo)
+- Backend: Render/Railway/Fly.io
+- Base de datos: Supabase
+
+Con eso, cada push a `main` ejecuta CI automáticamente.
+
 ## Endpoints principales
 
 | Método | Ruta | Descripción |
