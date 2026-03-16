@@ -127,6 +127,31 @@ Secrets sugeridos:
 - Backend: Render/Railway/Fly.io
 - Base de datos: Supabase
 
+### 5. Configuración de Render para este monorepo (backend)
+
+Si Render muestra un error como:
+
+error: invalid local: resolve : lstat /opt/render/project/src/backend/backend: no such file or directory
+
+significa que se está duplicando la carpeta backend en la configuración del servicio.
+
+Usa solo una de estas dos configuraciones (no mezclar):
+
+Opción A (recomendada para este repo):
+- Root Directory: backend
+- Dockerfile Path: ./Dockerfile
+- Docker Build Context Directory: .
+
+Opción B:
+- Root Directory: (vacío)
+- Dockerfile Path: backend/Dockerfile
+- Docker Build Context Directory: backend
+
+Importante:
+- No uses Root Directory=backend junto con Dockerfile Path=backend/Dockerfile.
+- No uses Root Directory=backend junto con Docker Build Context Directory=backend.
+- Cualquiera de esas combinaciones termina en backend/backend y rompe el build.
+
 Con eso, cada push a `main` ejecuta CI automáticamente.
 
 ## Endpoints principales
