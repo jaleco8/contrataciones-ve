@@ -158,10 +158,16 @@ cp frontend/.env.local.example frontend/.env.local
 En el **SQL Editor** de tu proyecto Supabase, ejecutar en orden:
 
 ```sql
--- 1. Schema completo (tablas, índices, triggers, vistas)
+-- 1. Schema completo (tablas, índices, triggers, vistas, RLS y políticas base)
 supabase/migrations/001_initial_schema.sql
 
--- 2. Datos de demostración (ficticios)
+-- 2. Hardening de seguridad para instancias ya existentes
+supabase/migrations/002_security_hardening_rls_views.sql
+
+-- 3. Hardening adicional (función + extensión)
+supabase/migrations/003_security_hardening_functions_extensions.sql
+
+-- 4. Datos de demostración (ficticios)
 supabase/seed.sql
 ```
 
@@ -257,6 +263,8 @@ contrataciones-ve/
 │   └── lib/               # api.ts · types.ts · utils.ts
 └── supabase/
     ├── migrations/001_initial_schema.sql
+    ├── migrations/002_security_hardening_rls_views.sql
+    ├── migrations/003_security_hardening_functions_extensions.sql
     └── seed.sql
 ```
 

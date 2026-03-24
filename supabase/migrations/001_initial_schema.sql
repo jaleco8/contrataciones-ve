@@ -5,7 +5,8 @@
 
 -- Extensiones
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pg_trgm";  -- Para búsqueda de texto
+CREATE SCHEMA IF NOT EXISTS extensions;
+CREATE EXTENSION IF NOT EXISTS "pg_trgm" WITH SCHEMA extensions;  -- Para búsqueda de texto
 
 -- ============================================================
 -- TABLA: suppliers (proveedores)
@@ -40,7 +41,7 @@ CREATE TABLE IF NOT EXISTS suppliers (
 
 -- Índices suppliers
 CREATE INDEX idx_suppliers_rif ON suppliers(rif);
-CREATE INDEX idx_suppliers_name_trgm ON suppliers USING GIN (name gin_trgm_ops);
+CREATE INDEX idx_suppliers_name_trgm ON suppliers USING GIN (name extensions.gin_trgm_ops);
 CREATE INDEX idx_suppliers_sanction ON suppliers(sanction_status);
 CREATE INDEX idx_suppliers_sector ON suppliers(sector);
 
@@ -105,7 +106,7 @@ CREATE INDEX idx_processes_buyer ON processes(buyer_name);
 CREATE INDEX idx_processes_awarded_supplier ON processes(awarded_supplier_id);
 CREATE INDEX idx_processes_category ON processes(category);
 CREATE INDEX idx_processes_published ON processes(published_at DESC);
-CREATE INDEX idx_processes_title_trgm ON processes USING GIN (title gin_trgm_ops);
+CREATE INDEX idx_processes_title_trgm ON processes USING GIN (title extensions.gin_trgm_ops);
 
 -- ============================================================
 -- TABLA: contracts (contratos)
@@ -165,7 +166,7 @@ CREATE INDEX idx_contracts_buyer ON contracts(buyer_name);
 CREATE INDEX idx_contracts_status ON contracts(status);
 CREATE INDEX idx_contracts_signed ON contracts(signed_at DESC);
 CREATE INDEX idx_contracts_amount ON contracts(amount DESC);
-CREATE INDEX idx_contracts_title_trgm ON contracts USING GIN (title gin_trgm_ops);
+CREATE INDEX idx_contracts_title_trgm ON contracts USING GIN (title extensions.gin_trgm_ops);
 
 -- ============================================================
 -- TABLA: contract_amendments (adendas)
@@ -270,12 +271,15 @@ CREATE INDEX idx_alerts_score ON risk_alerts(score DESC);
 -- FUNCIÓN: actualizar updated_at automáticamente
 -- ============================================================
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SET search_path = pg_catalog
+AS $$
 BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$;
 
 -- Triggers para updated_at
 CREATE TRIGGER update_suppliers_updated_at
@@ -295,11 +299,67 @@ CREATE TRIGGER update_risk_alerts_updated_at
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================================
+-- SEGURIDAD: habilitar RLS en tablas públicas y políticas mínimas
+-- ============================================================
+
+ALTER TABLE suppliers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE processes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contracts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contract_amendments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contract_payments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE risk_alerts ENABLE ROW LEVEL SECURITY;
+
+-- Lectura pública (anon/authenticated) para datos de transparencia.
+-- Escrituras se mantienen restringidas por ausencia de políticas DML.
+DROP POLICY IF EXISTS suppliers_public_read ON suppliers;
+CREATE POLICY suppliers_public_read
+    ON suppliers
+    FOR SELECT
+    TO anon, authenticated
+    USING (TRUE);
+
+DROP POLICY IF EXISTS processes_public_read ON processes;
+CREATE POLICY processes_public_read
+    ON processes
+    FOR SELECT
+    TO anon, authenticated
+    USING (TRUE);
+
+DROP POLICY IF EXISTS contracts_public_read ON contracts;
+CREATE POLICY contracts_public_read
+    ON contracts
+    FOR SELECT
+    TO anon, authenticated
+    USING (TRUE);
+
+DROP POLICY IF EXISTS contract_amendments_public_read ON contract_amendments;
+CREATE POLICY contract_amendments_public_read
+    ON contract_amendments
+    FOR SELECT
+    TO anon, authenticated
+    USING (TRUE);
+
+DROP POLICY IF EXISTS contract_payments_public_read ON contract_payments;
+CREATE POLICY contract_payments_public_read
+    ON contract_payments
+    FOR SELECT
+    TO anon, authenticated
+    USING (TRUE);
+
+DROP POLICY IF EXISTS risk_alerts_public_read ON risk_alerts;
+CREATE POLICY risk_alerts_public_read
+    ON risk_alerts
+    FOR SELECT
+    TO anon, authenticated
+    USING (TRUE);
+
+-- ============================================================
 -- VISTAS útiles para el dashboard
 -- ============================================================
 
 -- Vista: resumen de contratos por comprador
-CREATE OR REPLACE VIEW v_buyer_summary AS
+CREATE OR REPLACE VIEW v_buyer_summary
+WITH (security_invoker = true) AS
 SELECT
     buyer_name,
     COUNT(*) as contracts_count,
@@ -312,7 +372,8 @@ GROUP BY buyer_name
 ORDER BY total_amount DESC;
 
 -- Vista: proveedores con más contratos
-CREATE OR REPLACE VIEW v_supplier_concentration AS
+CREATE OR REPLACE VIEW v_supplier_concentration
+WITH (security_invoker = true) AS
 SELECT
     s.id,
     s.rif,
@@ -329,7 +390,8 @@ GROUP BY s.id, s.rif, s.name, s.sanction_status
 ORDER BY total_amount DESC;
 
 -- Vista: estadísticas generales del dashboard
-CREATE OR REPLACE VIEW v_dashboard_stats AS
+CREATE OR REPLACE VIEW v_dashboard_stats
+WITH (security_invoker = true) AS
 SELECT
     (SELECT COUNT(*) FROM contracts WHERE status = 'active') as active_contracts,
     (SELECT COUNT(*) FROM contracts) as total_contracts,
